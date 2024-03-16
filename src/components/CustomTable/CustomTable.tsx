@@ -1,71 +1,74 @@
 import { useState } from "react";
 
 interface Item {
+  id: number;
   city: string;
   country: string;
 }
 
 interface CustomTableProps {
   items: Item[];
+  options: number[];
 }
 
-export const CustomTable = ({ items }: CustomTableProps) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-
+export const CustomTable = ({ items, options }: CustomTableProps) => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const totalPages = Math.ceil(items.length / itemsPerPage);
 
-  const changePage = (pageNumber: number) => {
-    if (pageNumber >= 1 && pageNumber <= totalPages) {
-      setCurrentPage(pageNumber);
+  const handleCurrentPage = (pageNum: number) => {
+    if (pageNum >= 1 && pageNum <= totalPages) {
+      setCurrentPage(pageNum);
     }
   };
 
-  const changeItemsPerPage = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setItemsPerPage(parseInt(event.target.value, 10));
-    setCurrentPage(1); // Reset to first page
+  const handleItemsPerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setItemsPerPage(parseInt(e.target.value, 10));
+    setCurrentPage(1);
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = items.slice(startIndex, endIndex);
+  const itemsDisplayed = items.slice(startIndex, endIndex);
 
   return (
     <div>
-      <table>
-        <thead>
-          <tr>
-            <th>City</th>
-            <th>Country</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((item, index) => (
-            <tr key={index}>
-              <td>{item.city}</td>
-              <td>{item.country}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
       <div>
-        <label htmlFor="itemsPerPage">Items per page:</label>
+        <label htmlFor="howManyPerPage">Select how many items per page</label>
         <select
-          id="itemsPerPage"
+          id="howManyPerPage"
           value={itemsPerPage}
-          onChange={changeItemsPerPage}
+          onChange={handleItemsPerPage}
         >
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="15">15</option>
+          {options.map((option, index) => (
+            <option value={option} key={index}>
+              {option}
+            </option>
+          ))}
         </select>
       </div>
       <div>
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button key={index} onClick={() => changePage(index + 1)}>
-            {index + 1}
-          </button>
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button onClick={() => handleCurrentPage(i + 1)}>{i + 1}</button>
         ))}
+      </div>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>City</th>
+              <th>Country</th>
+            </tr>
+          </thead>
+          <tbody>
+            {itemsDisplayed.map(({ id, city, country }) => (
+              <tr key={id}>
+                <td>{city}</td>
+                <td>{country}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
