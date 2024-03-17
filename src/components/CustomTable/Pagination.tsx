@@ -1,3 +1,5 @@
+import "./styles.css";
+
 interface PaginationProps {
   options: number[];
   itemsPerPage: number;
@@ -14,8 +16,8 @@ export const Pagination = ({
   handleCurrentPage,
 }: PaginationProps) => {
   return (
-    <div>
-      <div>
+    <div className="pagination">
+      <div className="pagination-select">
         <label htmlFor="howManyPerPage">Select how many items per page</label>
         <select
           id="howManyPerPage"

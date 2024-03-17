@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Pagination } from "./Pagination";
+import "./styles.css";
 
 interface Item {
   id: number;
@@ -33,7 +34,26 @@ export const CustomTable = ({ items, options }: CustomTableProps) => {
   const itemsDisplayed = items.slice(startIndex, endIndex);
 
   return (
-    <div>
+    <div className="custom-table-container ">
+      <table className="custom-table">
+        <caption>
+          Custom table with Pagination and Select how many items per page
+        </caption>
+        <thead>
+          <tr>
+            <th>City</th>
+            <th>Country</th>
+          </tr>
+        </thead>
+        <tbody>
+          {itemsDisplayed.map(({ id, city, country }) => (
+            <tr key={id}>
+              <td>{city}</td>
+              <td>{country}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <Pagination
         options={options}
         itemsPerPage={itemsPerPage}
@@ -41,24 +61,6 @@ export const CustomTable = ({ items, options }: CustomTableProps) => {
         handleItemsPerPage={handleItemsPerPage}
         handleCurrentPage={handleCurrentPage}
       />
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th>City</th>
-              <th>Country</th>
-            </tr>
-          </thead>
-          <tbody>
-            {itemsDisplayed.map(({ id, city, country }) => (
-              <tr key={id}>
-                <td>{city}</td>
-                <td>{country}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
     </div>
   );
 };
