@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Pagination } from "./Pagination";
 
 interface Item {
   id: number;
@@ -33,25 +34,13 @@ export const CustomTable = ({ items, options }: CustomTableProps) => {
 
   return (
     <div>
-      <div>
-        <label htmlFor="howManyPerPage">Select how many items per page</label>
-        <select
-          id="howManyPerPage"
-          value={itemsPerPage}
-          onChange={handleItemsPerPage}
-        >
-          {options.map((option, index) => (
-            <option value={option} key={index}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button onClick={() => handleCurrentPage(i + 1)}>{i + 1}</button>
-        ))}
-      </div>
+      <Pagination
+        options={options}
+        itemsPerPage={itemsPerPage}
+        totalPages={totalPages}
+        handleItemsPerPage={handleItemsPerPage}
+        handleCurrentPage={handleCurrentPage}
+      />
       <div>
         <table>
           <thead>
