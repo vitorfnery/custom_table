@@ -1,6 +1,6 @@
 # Custom Table
 
-![preview](.github/preview.png)
+![preview](.github/demo.png)
 
 > # Description 
 
